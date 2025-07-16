@@ -5,3 +5,7 @@ requests==2.31.0
 Pillow>=10.0.0
 psutil>=5.9.5
 pyperclip>=1.8.2
+# Enhanced version dependencies
+sqlite3
+# Note: sqlite3 is built into Python, this is just for documentation
+typing_extensions>=4.0.0
