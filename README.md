@@ -12,6 +12,18 @@ A local desktop application that provides a chat interface to interact with Clau
 - ⌨️ **Keyboard Shortcuts**: Enter to send, Shift+Enter for new line
 - 💾 **No Browser Required**: Pure desktop application
 
+## Enhanced Features
+
+- 📊 **Conversation Analytics**: Real-time quality scoring and conversation metrics
+- 🎯 **Universal Mode**: Combined capabilities for all conversation types (creative, analytical, coding, writing)
+- 💾 **Persistent Storage**: Conversations automatically saved to SQLite database
+- 📈 **Performance Monitoring**: Response time tracking and token usage analytics
+- 🔧 **Configuration Management**: Customizable settings with GUI configuration panel
+- 📤 **Export Capabilities**: Export conversations to JSON with full analytics
+- 🧪 **Comprehensive Testing**: Full test suite for reliability and quality assurance
+- 📝 **Feedback System**: Built-in user feedback collection and analytics dashboard
+- 🔄 **Auto-save**: Automatic conversation persistence with quality assessment
+
 ## Prerequisites
 
 - Python 3.7 or higher
@@ -60,9 +72,9 @@ run_claude.bat
 python claude_desktop.py
 ```
 
-**Option 3: Using the launcher**
+**Option 3: Run tests**
 ```bash
-python run_desktop.py
+python tests/test_suite.py
 ```
 
 ## Usage
@@ -79,18 +91,19 @@ python run_desktop.py
 ## Project Structure
 
 ```
-local-claude-ai/
-├── claude_desktop.py   # Main desktop application
-├── run_desktop.py      # Application launcher
-├── run_claude.bat      # Windows batch launcher
-├── app.py              # Web version (optional)
-├── requirements.txt    # Python dependencies
-├── setup.ps1          # Setup script for Windows
-├── .env.example       # Environment variables template
-├── .env              # Your environment variables (create this)
-├── templates/
-│   └── index.html    # Web interface (optional)
-└── README.md         # This file
+claude-desktop-ai/
+├── claude_desktop.py        # Main enhanced desktop application
+├── feedback_system.py       # Feedback collection and analytics
+├── run_claude.bat          # Windows batch launcher
+├── requirements.txt        # Python dependencies
+├── setup.ps1              # Setup script for Windows
+├── .env.example           # Environment variables template
+├── .env                  # Your environment variables (create this)
+├── tests/
+│   └── test_suite.py     # Comprehensive test suite
+├── conversations.db       # SQLite database for conversation storage
+├── feedback.db           # SQLite database for feedback data
+└── README.md            # This file
 ```
 
 ## Configuration
@@ -108,8 +121,8 @@ You can modify the following settings in `claude_desktop.py`:
 ### Common Issues
 
 1. **API Key Error**: Make sure your `.env` file contains a valid Anthropic API key
-2. **Port Already in Use**: Change the port in `app.py` or stop other services using port 5000
-3. **Module Not Found**: Ensure you've activated the virtual environment and installed dependencies
+2. **Module Not Found**: Ensure you've activated the virtual environment and installed dependencies
+3. **Import Errors**: Make sure all dependencies are installed with `pip install -r requirements.txt`
 
 ### Getting Help
 
