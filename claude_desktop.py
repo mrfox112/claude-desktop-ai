@@ -1996,6 +1996,10 @@ class EnhancedClaudeDesktopApp:
         self.memory_system = None
         self.memory_enabled = True
         
+        # Web intelligence system will be loaded lazily
+        self.web_intelligence = None
+        self.web_intelligence_enabled = True
+        
         # Set window geometry from config
         width = self.config.get('window_width', 800)
         height = self.config.get('window_height', 600)
@@ -2138,6 +2142,26 @@ class EnhancedClaudeDesktopApp:
                 self.notification_system.show_notification(f"Failed to load optimization: {e}", "error")
                 return False
         return self.optimization_manager is not None
+    
+    def load_web_intelligence_system(self):
+        """Lazy load web intelligence system when needed"""
+        if self.web_intelligence is None and self.web_intelligence_enabled:
+            try:
+                print("Loading web intelligence system...")
+                from web_intelligence import get_web_intelligence
+                
+                self.web_intelligence = get_web_intelligence()
+                
+                print("✅ Web intelligence system loaded successfully!")
+                self.notification_system.show_notification("Web intelligence system loaded successfully", "success")
+                return True
+            except Exception as e:
+                print(f"❌ Failed to load web intelligence system: {e}")
+                self.web_intelligence = None
+                self.web_intelligence_enabled = False
+                self.notification_system.show_notification(f"Failed to load web intelligence: {e}", "error")
+                return False
+        return self.web_intelligence is not None
     
     def setup_hotkeys(self):
         """Setup keyboard shortcuts"""
@@ -2799,6 +2823,36 @@ class EnhancedClaudeDesktopApp:
                         print(f"BERT processed message: {message[:50]}...")
                     except Exception as e:
                         print(f"BERT processing failed: {e}")
+                        enhanced_message = message
+            
+            # Try to load and use web intelligence if available
+            elif self.web_intelligence_enabled and any(keyword in message.lower() for keyword in ['weather', 'news', 'search', 'current', 'web', 'internet', 'latest', 'recent', 'today', 'now']):
+                if self.load_web_intelligence_system():
+                    try:
+                        # Get comprehensive context using web intelligence
+                        context = self.web_intelligence.get_comprehensive_context(message)
+                        
+                        # Add web context to the message
+                        web_context = ""
+                        if context['web_results']:
+                            web_context += "\n\nRecent web search results:\n"
+                            for result in context['web_results'][:3]:
+                                web_context += f"• {result.title}: {result.snippet}\n"
+                        
+                        if context['news']:
+                            web_context += "\n\nLatest news:\n"
+                            for article in context['news'][:3]:
+                                web_context += f"• {article.title}: {article.summary}\n"
+                        
+                        if context['market_data']:
+                            web_context += "\n\nMarket data:\n"
+                            for data in context['market_data']:
+                                web_context += f"• {data.symbol}: ${data.price:.2f} ({data.change_percent:+.1f}%)\n"
+                        
+                        enhanced_message = message + web_context
+                        self.root.after(0, lambda: update_status("Enhancing with web intelligence...", "cyan"))
+                    except Exception as e:
+                        logger.warning(f"Web intelligence enhancement failed: {e}")
                         enhanced_message = message
             
             # Try to load and use intelligence enhancement if available

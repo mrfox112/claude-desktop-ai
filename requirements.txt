@@ -147,6 +147,7 @@ requests-html>=0.10.0
 newspaper3k>=0.2.8
 feedparser>=6.0.10
 twitter>=1.19.0
+yfinance>=0.2.0
 
 # Audio & Speech Processing
 speech-recognition>=3.10.0
