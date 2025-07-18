@@ -1,0 +1,9 @@
+# Optional dependencies for enhanced features
+
+# Drag-and-drop support
+tkinterdnd2>=0.3.0
+
+# Enhanced animations and styling
+pillow>=10.0.0
+
+# Additional UI enhancements
