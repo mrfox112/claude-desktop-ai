@@ -1992,6 +1992,10 @@ class EnhancedClaudeDesktopApp:
         # Model optimization system will be loaded lazily
         self.optimization_manager = None
         
+        # Advanced memory system will be loaded lazily
+        self.memory_system = None
+        self.memory_enabled = True
+        
         # Set window geometry from config
         width = self.config.get('window_width', 800)
         height = self.config.get('window_height', 600)
@@ -2739,6 +2743,16 @@ class EnhancedClaudeDesktopApp:
         start_time = time.time()
         
         try:
+            # Initialize memory system if enabled
+            if self.memory_enabled:
+                if self.memory_system is None:
+                    from memory_system import AdvancedMemorySystem
+                    self.memory_system = AdvancedMemorySystem()
+                    logger.info("Advanced memory system initialized.")
+                
+                # Store user message in memory
+                self.memory_system.store_memory(message, memory_type="conversation", tags=["user_input"])
+                
             # Update status on main thread
             def update_status(text, color="orange"):
                 try:
@@ -2832,6 +2846,16 @@ class EnhancedClaudeDesktopApp:
             # Add system prompt for personality
             system_prompt = self.personality_system.get_system_prompt()
             
+            # Enhanced system prompt with memory context
+            if self.memory_system:
+                # Search for relevant memories
+                relevant_memories = self.memory_system.search_memories(enhanced_message, limit=5)
+                if relevant_memories:
+                    memory_context = "\n\nRelevant context from previous conversations:\n"
+                    for memory in relevant_memories:
+                        memory_context += f"- {memory.content[:100]}...\n"
+                    system_prompt += memory_context
+            
             # Send to Claude with system prompt
             response = self.client.messages.create(
                 system=system_prompt,
@@ -2855,12 +2879,25 @@ class EnhancedClaudeDesktopApp:
             }
             self.conversation.append(claude_msg)
             
-            # Calculate quality score
-            quality_score = self.analyzer.analyze_conversation_quality([claude_msg])
-            claude_msg['quality_score'] = quality_score
-            
-            # Update UI in main thread
-            self.root.after(0, lambda: self.handle_claude_response(claude_response, response_time, quality_score))
+        # Calculate quality score
+        quality_score = self.analyzer.analyze_conversation_quality([claude_msg])
+        claude_msg['quality_score'] = quality_score
+        
+        # Store Claude response in memory if enabled
+        if self.memory_system:
+            self.memory_system.store_memory(
+                claude_response, 
+                memory_type="conversation", 
+                tags=["ai_response", self.personality_system.current_personality],
+                metadata={
+                    "quality_score": quality_score,
+                    "response_time": response_time,
+                    "personality": self.personality_system.current_personality
+                }
+            )
+        
+        # Update UI in main thread
+        self.root.after(0, lambda: self.handle_claude_response(claude_response, response_time, quality_score))
             
         except Exception as e:
             error_msg = f"Error: {str(e)}"
