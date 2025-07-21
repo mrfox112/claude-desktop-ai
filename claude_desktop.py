@@ -2000,6 +2000,10 @@ class EnhancedClaudeDesktopApp:
         self.web_intelligence = None
         self.web_intelligence_enabled = True
         
+        # Auto-updater system
+        self.auto_updater = None
+        self.auto_update_enabled = True
+        
         # Set window geometry from config
         width = self.config.get('window_width', 800)
         height = self.config.get('window_height', 600)
@@ -2374,6 +2378,9 @@ class EnhancedClaudeDesktopApp:
         
         # Start background tasks
         self.start_background_tasks()
+        
+        # Initialize auto-updater
+        self.initialize_auto_updater()
     
     def create_header(self, parent):
         """Create enhanced header with title, stats, and real-time metrics"""
@@ -3548,6 +3555,31 @@ Speaking Style: {personality_info['speaking_style']}
         
         ttk.Button(frame, text="Save Settings", command=save_animation_settings).pack(pady=10)
         ttk.Button(frame, text="Close", command=settings_window.destroy).pack()
+    
+    def initialize_auto_updater(self):
+        """Initialize and start the auto-updater system"""
+        if not self.auto_update_enabled:
+            return
+            
+        try:
+            # Load auto-updater system
+            from auto_updater import AutoUpdater
+            self.auto_updater = AutoUpdater(enabled=True)
+            
+            # Start the updater in background
+            self.auto_updater.start_periodic_checks()
+            
+            logger.info("Auto-updater system initialized and started")
+            self.notification_system.show_notification("Auto-updater system started", "info")
+            
+        except ImportError:
+            logger.warning("Auto-updater system not available")
+            self.auto_updater = None
+            self.auto_update_enabled = False
+        except Exception as e:
+            logger.error(f"Failed to initialize auto-updater: {e}")
+            self.auto_updater = None
+            self.auto_update_enabled = False
 
 def main():
     """Main function to run the enhanced application"""
