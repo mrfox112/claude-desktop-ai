@@ -1,13 +1,14 @@
-# Local Claude AI Setup Script
+# Ether AI Desktop Setup Script
 
-Write-Host "🚀 Setting up Local Claude AI..." -ForegroundColor Green
+Write-Host "🚀 Setting up Ether AI Desktop..." -ForegroundColor Green
 
 # Check if Python is installed
 try {
     $pythonVersion = python --version 2>&1
     Write-Host "✅ Python found: $pythonVersion" -ForegroundColor Green
 } catch {
-    Write-Host "❌ Python not found. Please install Python 3.7+ first." -ForegroundColor Red
+    Write-Host "❌ Python not found. Please install Python 3.8+ first." -ForegroundColor Red
+    Write-Host "   Download from: https://python.org/downloads/" -ForegroundColor Yellow
     exit 1
 }
 
@@ -18,6 +19,10 @@ python -m venv venv
 # Activate virtual environment
 Write-Host "🔄 Activating virtual environment..." -ForegroundColor Yellow
 .\venv\Scripts\Activate.ps1
+
+# Upgrade pip
+Write-Host "⬆️  Upgrading pip..." -ForegroundColor Yellow
+python -m pip install --upgrade pip
 
 # Install requirements
 Write-Host "📥 Installing dependencies..." -ForegroundColor Yellow
@@ -32,12 +37,22 @@ if (-not (Test-Path ".env")) {
     Write-Host "✅ .env file already exists" -ForegroundColor Green
 }
 
+# Test installation
+Write-Host "🧪 Testing installation..." -ForegroundColor Yellow
+try {
+    python -c "import anthropic, tkinter; print('✅ Core dependencies working')"
+    Write-Host "✅ Installation test passed" -ForegroundColor Green
+} catch {
+    Write-Host "⚠️  Some dependencies may have issues" -ForegroundColor Yellow
+}
+
 Write-Host ""
 Write-Host "🎉 Setup complete!" -ForegroundColor Green
 Write-Host ""
 Write-Host "Next steps:" -ForegroundColor Cyan
 Write-Host "1. Edit .env file and add your Anthropic API key"
-Write-Host "2. Run: python app.py"
-Write-Host "3. Open http://localhost:5000 in your browser"
+Write-Host "2. Run: .\run_claude.bat (or python claude_desktop.py)"
+Write-Host "3. Enjoy your desktop AI interface!"
 Write-Host ""
-Write-Host "To get your API key, visit: https://console.anthropic.com/" -ForegroundColor Yellow
+Write-Host "Get your API key at: https://console.anthropic.com/" -ForegroundColor Yellow
+Write-Host "Need help? Check the README.md or open an issue on GitHub" -ForegroundColor Cyan

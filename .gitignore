@@ -1,5 +1,10 @@
-# Environment variables
+# Environment variables and secrets
 .env
+.env.local
+.env.production
+.security_salt
+api_keys.txt
+secrets.json
 
 # Python
 __pycache__/
@@ -24,19 +29,76 @@ wheels/
 *.egg
 MANIFEST
 
-# Virtual environment
+# Virtual environments
 venv/
 env/
 ENV/
+.venv/
+.env/
 
-# IDE
+# Databases
+*.db
+*.sqlite
+*.sqlite3
+memory_db/
+test_*.db
+
+# Logs and monitoring
+*.log
+logs/
+ether_ai.log
+
+# IDE and editors
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
+.sublime-project
+.sublime-workspace
 
-# OS
+# OS generated files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
-*.log
+desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+*~
+
+# Testing and coverage
+.coverage
+.pytest_cache/
+htmlcov/
+.tox/
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Jupyter notebooks
+.ipynb_checkpoints
+*.ipynb
+
+# AI/ML model files
+*.pkl
+*.model
+*.h5
+*.pth
+*.pt
+models/
+checkpoints/
+
+# Workspace and project files
+*.code-workspace
+.vscode/settings.json

@@ -1,11 +1,12 @@
-# 🚀 Ether AI - Neural Interface Desktop
+# 🚀 Ether AI - Desktop Interface
 
 [![GitHub stars](https://img.shields.io/github/stars/mrfox112/claude-desktop-ai?style=for-the-badge&logo=github&color=gold)](https://github.com/mrfox112/claude-desktop-ai/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/mrfox112/claude-desktop-ai?style=for-the-badge&logo=github&color=blue)](https://github.com/mrfox112/claude-desktop-ai/network)
 [![GitHub issues](https://img.shields.io/github/issues/mrfox112/claude-desktop-ai?style=for-the-badge&logo=github&color=red)](https://github.com/mrfox112/claude-desktop-ai/issues)
 [![License](https://img.shields.io/github/license/mrfox112/claude-desktop-ai?style=for-the-badge&color=green)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.8%2B-blue?style=for-the-badge&logo=python)](https://python.org)
 
-A revolutionary desktop application that provides an advanced AI interface powered by Claude AI with cutting-edge enhancements including web intelligence, dynamic personalities, and neural processing capabilities.
+A modern desktop application for interacting with Claude AI, featuring a clean interface, speech capabilities, and intelligent conversation management.
 
 ## Features
 
